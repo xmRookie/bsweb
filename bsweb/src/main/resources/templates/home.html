@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>主界面</title>
+    <link rel="icon" type="image/x-ico" href="../img/title.ico">
+    <link rel="stylesheet" type="text/css" href="../css/home.css" />
+</head>
+
+
+
+<script type="text/javascript"  src="../js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="../js/jQuery.md5.js"></script>
+<script type="text/javascript">
+
+    window.onload=function (ev) {
+        var current_name = window.localStorage.name;
+        document.getElementById("current_name_id").innerHTML=current_name;
+    }
+
+    /**
+     * 遍历所有的li，为当前点击的li添加“active”类，其他li去除类名
+     */
+    $(function(){
+        $(".cnav li").click(function() {
+            var Li = document.getElementsByTagName("li");
+            for (var i=0; i<Li.length; i++){
+                Li[i].className="";
+            }
+            //$(this).siblings('li').removeClass('active');  // 删除其兄弟元素的样式
+            $(this).addClass('active');                    // 为点击元素添加类名
+            var li_index = $(".cnav li").index(this); //获取点击之后返回当前li标签index的值
+            /*显示class中mainContainer加上li_index值所对应的div,并隐藏其他同级div*/
+            //$(".mainContainer").find("div").eq(li_index).show().siblings("div").hide();
+            $(".mainContainer").contents("div").eq(li_index).show().siblings("div").hide();
+        });
+    });
+
+
+    /**
+     * 注册用户函数
+     */
+    function checkForm() {
+        var name = $("#uname_id").val();
+        var passwd = $("#upasswd_id").val();
+        var confirmpasswd = $("#confirmpasswd_id").val();
+
+        if(passwd.length == 0 || name.length == 0 || confirmpasswd.length == 0 || passwd != confirmpasswd){
+
+        }else {
+            //alert(passwd);
+            if(passwd == confirmpasswd ){
+                var md5passwd = $.md5(passwd);
+                $.post('../user/register',
+                    {uname: name,
+                        upasswd: md5passwd
+                    },
+                    function (output, status, xhr) {
+                        if(output == "true"){
+                            alert("注册成功");
+                        }else if(output == "false"){
+                            alert("注册失败");
+                        }else {
+                            alert("用户名已存在");
+                        }
+                    });
+            }else{
+                //return false;
+                alert("密码不一致");
+            }
+        }
+
+    }
+    function passwdverify() {
+        var passwd_obj = document.getElementById("upasswd_id");
+        var confirmpasswd_obj = document.getElementById("confirmpasswd_id");
+        var passwd = passwd_obj.value;
+        var confirmpasswd = confirmpasswd_obj.value;
+        if(passwd.length != 6){
+            document.getElementById("upasswd_inner").innerHTML="请设置6位密码";
+        }else {
+            document.getElementById("upasswd_inner").innerHTML="";
+        }
+
+        if(confirmpasswd.length != 0 && passwd != confirmpasswd){
+            document.getElementById("confirmpasswd_inner").innerHTML="密码不一致";
+        }else {
+            document.getElementById("confirmpasswd_inner").innerHTML="";
+        }
+    }
+    function confirmpasswdverify() {
+
+        var passwd_obj = document.getElementById("upasswd_id");
+        var confirmpasswd_obj = document.getElementById("confirmpasswd_id");
+        var passwd = passwd_obj.value;
+        var confirmpasswd = confirmpasswd_obj.value;
+        if(passwd != confirmpasswd){
+            document.getElementById("confirmpasswd_inner").innerHTML="密码不一致";
+        }else {
+            document.getElementById("confirmpasswd_inner").innerHTML="";
+        }
+    }
+
+    /**
+     * 重置密码函数
+     */
+    function reset_checkForm() {
+        var name = $("#reset_uname_id").val();
+        var passwd = $("#reset_upasswd_id").val();
+        var confirmpasswd = $("#reset_confirmpasswd_id").val();
+
+        if(passwd.length == 0 || name.length == 0 || confirmpasswd.length == 0 || passwd != confirmpasswd){
+
+        }else {
+            if(passwd == confirmpasswd){
+                var md5passwd = $.md5(passwd);
+                $.post('../user/reset',
+                    {uname: name,
+                        upasswd: md5passwd
+                    },
+                    function (output, status, xhr) {
+                        if(output == "true"){
+                            alert("修改密码成功");
+                        }else if(output == "false"){
+                            alert("修改密码失败");
+                        }else {
+                            alert("用户不存在");
+                        }
+                    });
+            }else{
+                //return false;
+                alert("密码不一致");
+            }
+        }
+
+    }
+    function reset_passwdverify() {
+        var passwd_obj = document.getElementById("reset_upasswd_id");
+        var confirmpasswd_obj = document.getElementById("reset_confirmpasswd_id");
+        var passwd = passwd_obj.value;
+        var confirmpasswd = confirmpasswd_obj.value;
+        if(passwd.length != 6){
+            document.getElementById("reset_upasswd_inner").innerHTML="请设置6位密码";
+        }else {
+            document.getElementById("reset_upasswd_inner").innerHTML="";
+        }
+
+        if(confirmpasswd.length != 0 && passwd != confirmpasswd){
+            document.getElementById("reset_confirmpasswd_inner").innerHTML="密码不一致";
+        }else {
+            document.getElementById("reset_confirmpasswd_inner").innerHTML="";
+        }
+    }
+    function reset_confirmpasswdverify() {
+
+        var passwd_obj = document.getElementById("reset_upasswd_id");
+        var confirmpasswd_obj = document.getElementById("reset_confirmpasswd_id");
+        var passwd = passwd_obj.value;
+        var confirmpasswd = confirmpasswd_obj.value;
+
+        if(passwd != confirmpasswd){
+            document.getElementById("reset_confirmpasswd_inner").innerHTML="密码不一致";
+        }else {
+            document.getElementById("reset_confirmpasswd_inner").innerHTML="";
+        }
+    }
+
+
+
+</script>
+
+
+<script type="text/javascript" src="../js/lineChart.js"></script>
+<script>
+    function scanFunc() {
+        var arr;
+        var myCanvas = document.getElementById("demoCanvas");
+        var ctx = myCanvas.getContext('2d');
+        //从html的表单中获取数据 起始频率、终止频率
+        var start_frq_str = $("#Start_Frq").val();
+        var stop_frq_str = $("#Stop_Frq").val();
+        //alert(stop_frq);
+        //从html的表单中获取数据 中心频率数值
+        //var center_frq = $("#Center_Frq").val();
+        //单位转成MHz
+        //var input = center_frq * 1e6;
+
+        var start_frq = new Number(start_frq_str);
+        var stop_frq = new Number(stop_frq_str);
+
+        var input = new Number(0);
+        input = (stop_frq - start_frq) / 2 + start_frq;
+        var center_frq = input ;
+        input = input * 1e6;
+
+        //根据输入频率宽度，切割画布成几个单元
+        var section = (stop_frq - start_frq) / 20;
+
+        //判断用户输入的中心频率是否在规定范围内
+        if ( stop_frq < start_frq ) {
+            alert("终止频率必须大于起始频率");
+        } else if ( start_frq < 70 || stop_frq > 6000) {
+            alert("请输入正确频率范围：70MHz ～ 6GHz");
+        } else if ( (stop_frq - start_frq < 20) || (stop_frq - start_frq > 100) ) {
+            alert("请控制频率间隔：20MHz ～ 100MHz");
+        } else if ( (stop_frq - start_frq) % 10 != 0 ) {
+            alert("请控制频率间隔在10MHz的倍数");
+        }else {
+            //alert(input);
+            document.getElementById("dsp_button").disabled = true;           //在获取数据期间，失能按键功能
+            ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);        //清空画布
+            var lineChart = new LineChart(ctx);
+            //初始化图形
+            lineChart.init(center_frq,section);
+
+            $.ajaxSettings.async=false;
+            var times = new Number(0);
+            for( times ; times < section; times++){
+                input = start_frq * 1e6 + times * 20e6 + 10e6;
+                //alert(input);
+                $.post('../Servlet', {input: input}, function (output, status, xhr) {
+                    // $("#input").val("");
+                    //解析servlet端传来的数据
+                    arr = output.split(",");
+                    //alert(arr);
+                    if (arr[0] == 0) {
+                        //绘制折线图所需的数据
+                        var data = [
+                            {x: 100, y: -100.1}
+                        ];
+                        for (var i = 1, j = 0; i < arr.length - 1; i++, j++) {
+                            //绘制折线图所需的数据，x轴从0开始，y从arr[1]开始
+                            data[j] = {x: j, y: arr[i]};
+                        }
+                        //alert(arr.length);
+                        //data ;  section : 1~8  ; start_section : 1~section
+                        lineChart.mydraw(data, section, (times+1));
+                    } else {
+                        //alert("Please check the USRP connection status!");
+                        alert("请检查USRP连接状态!");
+                        //break;
+                        times = section;
+                    }
+                });
+            }
+            document.getElementById("dsp_button").disabled = false;     //数据获取结束，使能按键功能
+            $.ajaxSettings.async=true;
+
+        }
+    }
+</script>
+
+<body>
+
+<div class="topContainer">
+    <a class="logo">
+        <img src="../img/starnet.png" alt="web系统" />
+    </a>
+    <div class="headContainer">
+        <div class="currentUser">
+            <span>您好，</span>
+            <a id="current_name_id" >欢迎您的访问
+            </a>
+        </div>
+        <img class="headImg" alt=" ">
+    </div>
+    <div class="indexContainer">
+        <div class="navContainer">
+            <div class="navDivOverflow">
+                <div class="cnav" >
+                    <ul>
+                        <li>
+                            <i class="tgl"></i>
+                            <a >注册用户</a>
+                        </li>
+                        <li>
+                            <i class="tgl"></i>
+                            <a >修改密码</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="spline"></div>
+                <div class="cnav">
+                    <ul>
+                        <li>
+                            <i class="tgl"></i>
+                            <a >扫频功能</a>
+                        </li>
+                        <li>
+                            <i class="tgl"></i>
+                            <a >基站</a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+        <div class="mainContainer">
+            <!--iframe name="Frame" scrolling="1" src="" style="border: 0px none; width: 100%; height: 100%; background-color: white" frameborder="0">
+            </iframe-->
+            <!-- 导航栏 index=0 的div块  当前对应功能:注册用户 -->
+            <div class="bodyContainer" >
+                <div class="resetContainer">
+                    <form id="registerForm_id" >
+                        <table>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <a class="resetTitle">注册帐号</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td >用户名</td>
+                                <td class="text-row">
+                                    <input class="u-input" id="uname_id" name="uname" type="text" required="required" placeholder="请设置用户名" maxlength="6" onkeyup="this.value=this.value.replace(/[^\w_]/g,'');">
+                                </td>
+                                <td ><a id="uname_inner"></a></td>
+                            </tr>
+
+                            <tr>
+                                <td >密码</td>
+                                <td class="text-row">
+                                    <input class="u-input" id="upasswd_id" name="upasswd" type="password" required="required" placeholder="请设置6位数字密码" onblur="passwdverify()" maxlength="6" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                                </td>
+                                <td ><a id="upasswd_inner"></a></td>
+                            </tr>
+
+                            <tr>
+                                <td >确认密码</td>
+                                <td class="text-row-last" ><input class="u-input" id="confirmpasswd_id" type="password" required="required" placeholder="请重复6位数字密码" onblur="confirmpasswdverify()" maxlength="6" onkeyup="this.value=this.value.replace(/\D/g,'')"></td>
+                                <td ><a id="confirmpasswd_inner"></a></td>
+                            </tr>
+
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <input id="reg_button_id" class="u-button"  type="button" onclick="checkForm()" value="注册">
+                                </td>
+                            </tr>
+
+                        </table>
+                    </form>
+                </div>
+
+            </div>
+
+            <!-- 导航栏 index=1 的div块  当前对应功能:修改密码-->
+            <div class="bodyContainer" >
+                <div class="resetContainer">
+                    <form id="resetForm_id" >
+                        <table>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <a class="resetTitle">重置密码</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td >用户名</td>
+                                <td class="text-row">
+                                    <input class="u-input" id="reset_uname_id"  type="text" required="required" placeholder="请设置用户名" maxlength="6" onkeyup="this.value=this.value.replace(/[^\w_]/g,'');">
+                                </td>
+                                <td ><a id="reset_uname_inner"></a></td>
+                            </tr>
+
+                            <tr>
+                                <td >密码</td>
+                                <td class="text-row">
+                                    <input class="u-input" id="reset_upasswd_id"  type="password" required="required" placeholder="请设置6位数字密码" onblur="reset_passwdverify()" maxlength="6" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                                </td>
+                                <td ><a id="reset_upasswd_inner"></a></td>
+                            </tr>
+
+                            <tr>
+                                <td >确认密码</td>
+                                <td class="text-row-last" ><input class="u-input" id="reset_confirmpasswd_id" type="password" required="required" placeholder="请重复6位数字密码" onblur="reset_confirmpasswdverify()" maxlength="6" onkeyup="this.value=this.value.replace(/\D/g,'')"></td>
+                                <td ><a id="reset_confirmpasswd_inner"></a></td>
+                            </tr>
+
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <input id="reset_button_id" class="u-button"  type="button" onclick="reset_checkForm()" value="确认修改">
+                                </td>
+                            </tr>
+
+                        </table>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 导航栏 index=2 的div块 当前对应功能:扫频功能-->
+            <div class="bodyContainer" >
+                <div >
+                    <form>
+                        <!-- 设置中新频率编辑栏 -->
+                        <span class="scanText">请输入起始频率: </span>
+                        <input class="scanInput" type="text" id="Start_Frq" required="required" size="1" placeholder="800" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                        <span class="scanText">MHz</span>
+                        <span class="scanText">请输入终止频率: </span>
+                        <input class="scanInput" type="text" id="Stop_Frq"  required="required" size="1" placeholder="900" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                        <span class="scanText">MHz</span>
+                        <input class="scanButton" type="button" id="dsp_button"  onclick="scanFunc()" value="开始"  >
+                        <span class="scanText">(频率间隔至少20MHz、至多100MHz，且为10MHz的整数倍)</span>
+                        <!-- <span>请输入中心频率: </span> <input type="text" id="Center_Frq" size="1" placeholder="875"> MHz -->
+                        <!-- 显示频谱图按键，会调用info函数，获取后台数据 -->
+                    </form>
+                </div>
+                <div class="canvasBox">
+                    <canvas id="demoCanvas" width="1300px" height="600px"></canvas>
+                </div>
+            </div>
+
+            <!-- 导航栏 index=3 的div块 当前对应功能:基站-->
+            <div class="bodyContainer" >
+                基站
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

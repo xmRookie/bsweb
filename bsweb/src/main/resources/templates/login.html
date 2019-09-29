@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>用户登入界面</title>
+    <link rel="icon" type="image/x-ico" href="../img/title.ico">
+    <link rel="stylesheet" type="text/css" href="../css/login.css" />
+
+    <script type="text/javascript" src="../js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../js/jQuery.md5.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+
+
+
+        function checkForm(){
+            var name = $("#UserName").val();
+            var passwd = $("#UserPasswd").val();
+            if(name.length == 0 || passwd.length == 0){
+                //alert("null");
+            }else {
+                var md5passwd = $.md5(passwd);
+                $.post('../user/loginverify',
+                    {uname: name,
+                        upasswd: md5passwd
+                    },
+                    function (output, status, xhr) {
+                        if(output == "false"){
+                            alert("登录失败");
+                        }else if(output == "true"){
+                            window.localStorage.name=name;
+                            window.location.href="home";
+                        }
+                    });
+            }
+
+        };
+
+        /*
+        window.onload=function () {
+            var str = [[${msg}]];
+            if(str != null){
+                alert(str);
+            }
+        };
+
+         */
+
+
+
+    </script>
+
+
+
+    </head>
+
+
+<body   >
+
+<div  class="main"  >
+
+
+    <div class="content">
+        <a class="logo" href="http://www.star-net.cn/">
+            <img src="../img/starnet.png" alt="web系统" />
+        </a>
+    </div>
+
+    <div class="aside">
+        <div class="aside-blur"></div>
+        <div class="loginArea" align="center">
+            <div class="loginTitle">
+                <a>帐号登录</a>
+            </div>
+
+
+            <div class="text-row">
+                <input class="u-input" type="text" id="UserName" name="username" required="required" placeholder="用户名" >
+            </div>
+            <div class="text-row-last">
+                <input class="u-input" type="password" id="UserPasswd" name="password" required="required" placeholder="密码"  autocomplete="off">
+            </div>
+            <div class=" ">
+                <input class="u-button" type="button" value="登录" onclick="checkForm()" style="margin-top: 10px">
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+</html>

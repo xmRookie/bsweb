@@ -1,0 +1,274 @@
+.topContainer{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+}
+
+.headContainer{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 110px;
+    border-bottom-width: 5px;
+    border-bottom-style: solid;
+    border-bottom-color: #0470BC;
+}
+.headImg{
+    position: fixed;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    solid-color: white;
+    top: 0;
+    right: 0;
+    width: 385px;
+    height: 110px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url("../img/headimg.jpg");
+    overflow: hidden;
+}
+.currentUser{
+    position: absolute;
+    left: 20px;
+    top: 82px;
+    width: 120px;
+    font-size: 16px;
+    padding: 2px;
+    overflow: hidden;
+    font-family: "微软雅黑",tahoma,verdana,sans-serif;
+    color: white;
+    font-weight: bold;
+    background-color: #0470BC;
+}
+
+.indexContainer{
+    position: absolute;
+    top: 115px;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+}
+
+.navContainer{
+    position: absolute;
+    top: 0px;
+    width: 198px;
+    height: 100%;
+    background-color: #EFEFEF;
+    border-right-width: 2px;
+    border-right-style: solid;
+    border-right-color: #A6A6A6;
+
+}
+.navDivOverflow{
+    position: absolute;
+    top: 50px;
+    width: 198px;
+    height: auto;
+    background-color: #EFEFEF;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+.cnav{
+    width: 100%;
+    overflow: hidden;
+}
+.cnav ul{
+    list-style-type:none;
+    margin:0;
+    padding:0;
+    overflow:hidden;
+}
+.cnav ul li{
+    margin: 0;
+    width: 100%;
+    line-height: 28px;
+    vertical-align: text-top;
+    cursor: pointer;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+.cnav ul li i {
+    margin-left: 20px;
+}
+.cnav ul li:hover {
+    background-color: #cacaca;
+}
+.cnav ul li a{
+    font-size: 14px;
+    font-family: "微软雅黑",tahoma,verdana,sans-serif;
+    color: black;
+    text-decoration: none;
+}
+.active{
+    background-color: #A6A6A6;
+}
+.spline {
+    height: 1px !important;
+    margin: 1px 5px 0;
+    background: none repeat scroll 0 0;
+    border-top: 1px solid;
+    overflow: hidden;
+    border-top-color: #cacaca;
+}
+.tgl {
+    width: 14px;
+    margin: 5px 5px 5px 0;
+    margin-left: 0px;
+}
+
+/*内容栏栏样式*/
+.mainContainer{
+    position: absolute;
+    left: 200px;
+    top: 0;
+    height: 100%;
+    width: 100%;
+}
+/*主显示栏样式*/
+.bodyContainer{
+    position: absolute;
+    left: 0px;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    margin: 20px 20px 20px 20px;
+    display: none;
+}
+/*重置密码框样式 & 注册框样式*/
+.resetContainer{
+    position: relative;
+    left: 20%;
+    top: 10%;
+    height: auto;
+    width: 450px;
+    background-color: white;
+    border:2px solid darkgrey;
+    box-shadow: darkgrey 8px 8px 8px 8px ;//边框阴影
+}
+/*重置密码框标题样式 & 注册框标题样式*/
+.resetTitle{
+    align-content: center;
+    box-sizing: border-box;
+    width: 100%;
+    line-height: 40px;
+    /*border-bottom: 1px solid #e3e4e5;*/
+    margin-bottom: 12px;
+    font-size: 25px;
+    font-family: "微软雅黑",tahoma,verdana,sans-serif;
+    color: black;
+}
+/*普通行样式*/
+.text-row{
+    position: relative;
+    border-left: 1px solid #e3e4e5;
+    border-right: 1px solid #e3e4e5;
+    border-top: 1px solid #e3e4e5;
+    width: 238px;
+}
+/*最后一行行样式*/
+.text-row-last{
+    position: relative;
+    border-left: 1px solid #e3e4e5;
+    border-right: 1px solid #e3e4e5;
+    border-top: 1px solid #e3e4e5;
+    border-bottom: 1px solid #e3e4e5;
+    width: 238px;
+}
+.resetContainer tr td{
+    font-size: 18px
+}
+/*输入栏样式*/
+.u-input{
+    background: none;
+    border: none;
+    padding: 2px 0;
+    color: #555;
+    height: 36px;
+    line-height: 30px;
+    width: 100%;
+}
+/*按键样式*/
+.u-button{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    font-weight: bold;
+    height: 46px;
+    background-color: #3598db;
+    color: rgb(255, 255, 255);
+    outline: none;
+}
+
+
+/*扫频界面，画布样式*/
+.canvasBox{
+    position: absolute;
+    top: auto;
+    left: 0;
+    width: 1300px;
+    height: 600px;
+    margin: 1px 1px 1px 1px;        //设置4个外边距
+}
+/*扫频界面操作栏样式*/
+.scanAction{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+}
+.scanText{
+    box-sizing: border-box;
+    width: auto;
+    line-height: 18px;
+    /*border-bottom: 1px solid #e3e4e5;*/
+    margin-bottom: 12px;
+    font-size: 18px;
+    font-family: "微软雅黑",tahoma,verdana,sans-serif;
+    color: black;
+}
+.scanInput{
+    background: none;
+    padding: 2px 0;
+    color: #555;
+    height: 20px;
+    line-height: 16px;
+    width: 60px;
+    border-left: 1px solid #e3e4e5;
+    border-right: 1px solid #e3e4e5;
+    border-top: 1px solid #e3e4e5;
+    border-bottom: 1px solid #e3e4e5;
+}
+.scanButton{
+    margin: 0;
+    padding: 0;
+    width: 60px;
+    font-size: 16px;
+    height: 30px;
+    background-color: #3598db;
+    color: rgb(255, 255, 255);
+    outline: none;
+}
+
+
+
+/*logo样式*/
+.logo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-block;
+}
+
+
+
